@@ -121,7 +121,7 @@ void Matrix<T>::Print(const int& Number_Matrix)
 }
 
 template <class T>
-Matrix<T>& Matrix<T>::operator = (const Matrix<T>& M) //ToDO+
+Matrix<T>& Matrix<T>::operator = (const Matrix<T>& M)
 {
 	if ((m == M.m) && (n == M.n))
 	{
@@ -153,18 +153,6 @@ Matrix<T>& Matrix<T>::operator = (const Matrix<T>& M) //ToDO+
 	return *this;
 }
 
-template <class T>
-Matrix<T>::~Matrix()
-{
-	if (n > 0)
-	{
-		for (int i = 0; i < m; i++)
-			delete[] data[i];
-	}
-
-	if (m > 0)
-		delete[] data;
-}
 
 template <class T>
 T& Matrix<T>::operator ()(int m, int n) const
@@ -414,6 +402,20 @@ void Matrix<complex<float>>::Random()
 			data[i][j] = value;
 		}
 	}
+}
+
+
+template <class T>
+Matrix<T>::~Matrix()
+{
+	if (n > 0)
+	{
+		for (int i = 0; i < m; i++)
+			delete[] data[i];
+	}
+
+	if (m > 0)
+		delete[] data;
 }
 
 template class Matrix<int>;
