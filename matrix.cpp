@@ -243,6 +243,8 @@ Matrix<T> Matrix<T>::operator / (const T& scalar)
 	return res;
 }
 
+
+
 template <class T>
 T Matrix<T>::Сalculating_trace_matrix()
 {
@@ -257,22 +259,6 @@ T Matrix<T>::Сalculating_trace_matrix()
 	return trace;
 }
 
-template <class T>
-Matrix<T> Matrix<T>::Transpose()
-{
-	Matrix<T> Transposed(m, n);
-	for (int i = 0; i < m; ++i)
-	{
-		for (int j = i; j < n; ++j)
-		{
-			Transposed.data[i][j] = data[j][i];
-			Transposed.data[j][i] = data[i][j];
-		}
-		cout << '\n';
-	}
-
-	return Transposed;
-}
 
 template <class T>
 void Matrix<T>::Random()
@@ -283,97 +269,19 @@ void Matrix<T>::Random()
 			data[i][j] = T((1 + rand() % 100) / 10.0);
 }
 
-template <class T>
-Matrix<T> Matrix<T>::Pre_Minor(int row, int col) const //todo+
-{
-	if (n != m) throw Different_Dimensions();
-	Matrix<T> New_Matrix(m - 1, n - 1);
-	int in = 0, jn = 0;
-
-	for (int i = 0; i < m; i++)
-	{
-		if (i != row)
-		{
-			jn = 0;
-			for (int j = 0; j < m; j++) {
-				if (j != col) {
-					New_Matrix.data[in][jn] = data[i][j];
-					jn++;
-				}
-			}
-			in++;
-		}
-	}
-
-	return New_Matrix;
-}
 
 template <class T>
-T Matrix<T>::NDeterminant(int size)
+T Matrix<T>::NDeterminant()
 {
 	if (n != m) throw Different_Dimensions();
 	Matrix<T> TmpMatrix(m, m);
-	int new_size = size - 1;
 	T d = 0;
-	int k = 1; //(-1) в степени i
-	if (size < 1) cout << "Определитель вычислить невозможно!";
-	if (m == 1)
-	{
-		d = data[0][0];
-		return(d);
-	}
-	if (m == 2)
-	{
-		d = data[0][0] * data[1][1] - data[1][0] * data[0][1];
-		return(d);
-	}
-	if (m > 2)
-	{
-
-
-		for (int i = 0; i < size; i++)
-		{
-
-			TmpMatrix = (*this).Pre_Minor(i, 0);
-
-			d += T(k) * data[i][0] * TmpMatrix.NDeterminant(new_size);
-			k = -k;
-		}
-
-	}
-
+	d = data[0][0] * data[1][1] * data[2][2] + data[0][1] * data[1][2] * data[2][0]
+		+ data[1][0] * data[2][1] * data[0][2] - data[2][0] * data[1][1] * data[0][2] -
+		data[2][1] * data[1][2] * data[0][0] - data[1][0] * data[0][1] * data[2][2];
 	return(d);
 }
 
-
-template <class T>
-Matrix<T> Matrix<T>::Search_Matrix_X(const Matrix<T>& Vector)
-{
-	if (this->n != Vector.m) throw Different_Dimensions();
-
-	T det = (*this).NDeterminant(m);
-	if (det == T(0)) throw Zero_Determinant();
-
-	cout << det << endl;
-	Matrix<T> Minors(n, m);
-
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < m; j++)
-		{
-			Minors.data[i][j] = (T(pow(-1, (i + j)))) * Pre_Minor(i, j).NDeterminant(m - 1);
-
-		}
-	}
-	cout << Minors << endl;
-
-	Matrix<T> Minors_Transpose = Minors.Transpose();
-	cout << Minors_Transpose << endl;
-	Matrix<T> Ans = (T(1) / det) * Minors_Transpose * Vector;
-
-
-	return Ans;
-}
 
 template <>
 void Matrix<complex<double>>::Random()

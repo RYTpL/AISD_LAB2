@@ -115,6 +115,8 @@ void menu()
 	Matrix<T>* Vector = NULL;
 	int current = 0, size = 0;
 	T value = 0;
+	T x = 0;
+	T cheker = 0;
 	while (menu1)
 	{
 
@@ -308,33 +310,16 @@ void menu()
 				system("pause");
 				break;
 			}
-
-			cout << "Введите вектор размерностью 3 на 1...\n" << endl;
-			Vector = new Matrix<T>(3, 1);
-			n = 0;
-			for (int m = 0; m < 3; m++)
+			x = Many_Matrix[current].NDeterminant();
+			cout << "Определитель матрицы = " << x << endl;
+			if (x == cheker)
 			{
-				cout << "Введите B[" << m + 1 << "][" << n + 1 << "]: ";
-				value = Check_Double<T>();
-				(*Vector)(m, n, value);
-
-
+				cout << "Векторы, составляющие матрицу 3 на 3 комплонарны" << endl;
 			}
-			cout << Vector;
-
-
-			Add_Matrix<T>(&size, &Many_Matrix, *Vector);
-			try
+			if (x != cheker)
 			{
-				New_matrix = Many_Matrix[current].Search_Matrix_X(*Vector);
-				Add_Matrix<T>(&size, &Many_Matrix, New_matrix);
+				cout << "Векторы, составляющие матрицу 3 на 3 не комплонарны" << endl;
 			}
-			catch (Exception& Error)
-			{
-				Error.print();
-				system("pause");
-			}
-
 			system("pause");
 
 			break;

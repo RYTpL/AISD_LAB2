@@ -39,11 +39,8 @@ public:
 
 	Matrix operator / (const T& scalar);
 	T Ñalculating_trace_matrix();
-	Matrix  Transpose();
 	void Random();
-	Matrix Pre_Minor(int row, int col) const;
-	T NDeterminant(int size);
-	Matrix Search_Matrix_X(const Matrix& Vector);
+	T NDeterminant();
 	friend ostream& operator << (ostream& os, const Matrix& New_Matrix)
 	{
 		for (int i = 0; i < New_Matrix.m; i++) {
