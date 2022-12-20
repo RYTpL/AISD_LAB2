@@ -219,7 +219,7 @@ int menu()
             std::cout << A << "\n *\n\n " << a << "\n\n = \n\n";
             C = A * a;
             std::cout << C;
-            std::cout << D;
+            //std::cout << D;
             break;
         }
         case 54: {
@@ -229,7 +229,7 @@ int menu()
             std::cout << "Enter a value (scalar): ";
             //a = zero_checker();
             a = Check_Double<T>();
-            std::cout << "A \ a:\n\n" << endl;
+            std::cout << "A / a:\n\n" << endl;
             std::cout << A << "\n /\n\n " << a << "\n\n = \n\n";
             C = A / a;
             std::cout << C;
@@ -242,22 +242,24 @@ int menu()
             std::cout << "Tr(A) = " << A.tr();
             break;
         }
-               /*case 56: {
-                   system("cls");
-                   std::cout << "Checking vectors for coplanarity." << endl;
-                   Matrix<T> test;
-                   test.CreateMatrixForCheck();
-                   test.CheckTheDeterminant();
-                   break;
-               }*/
-        case 58:
+        case 56: {
+            system("cls");
+            std::cout << "Checking vectors for coplanarity." << endl;
+            Matrix<T> test;
+            test.CreateMatrixForCheck();
+            test.CheckTheDeterminant();
+            break;
+               }
+        case '0':
         {
             system("cls");
             std::cout << "Access to an element in matrix A by index." << endl;
             std::cout << "enter the row: ";
-            int x = Check_Int();
+            int x;
+            cin >> x;
             std::cout << "\nenter the column: ";
-            int y = Check_Int();
+            int y;
+            cin >> y;
             std::cout << "\nthe value of the element: " << A(x, y);
             std::cout << "\nDo you want to change ellement?\n";
             int m3 = menu3();
@@ -273,6 +275,7 @@ int menu()
             }
                    break;
             }
+            break;
         }
         case 57:
         {

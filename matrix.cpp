@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
+ï»¿#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #define _CRT_SECURE_NO_WARNINGS
 #include <string.h>
@@ -23,19 +23,14 @@ template<class T>
 T Check_Double()
 {
     T number;
-
     while (!(cin >> number) || (cin.peek() != '\n'))
     {
         cin.clear();
         while (cin.get() != '\n');
-        cout << "Ââåäèòå êîððåêòíîå çíà÷åíèå...\n";
+        cout << "Ã‚Ã¢Ã¥Ã¤Ã¨Ã²Ã¥ ÃªÃ®Ã°Ã°Ã¥ÃªÃ²Ã­Ã®Ã¥ Ã§Ã­Ã Ã·Ã¥Ã­Ã¨Ã¥...\n";
     }
-
-
     return number;
 }
-
-
 //int
 int Check_Int()
 {
@@ -46,12 +41,10 @@ int Check_Int()
         {
             cin.clear();
             while (cin.get() != '\n');
-            cout << "Ââåäèòå êîððåêòíîå çíà÷åíèå...\n";
+            cout << "Ã‚Ã¢Ã¥Ã¤Ã¨Ã²Ã¥ ÃªÃ®Ã°Ã°Ã¥ÃªÃ²Ã­Ã®Ã¥ Ã§Ã­Ã Ã·Ã¥Ã­Ã¨Ã¥...\n";
         }
-        if (number <= 0) cout << "Ââåäèòå êîððåêòíîå çíà÷åíèå...\n";
-
+        if (number <= 0) cout << "Ã‚Ã¢Ã¥Ã¤Ã¨Ã²Ã¥ ÃªÃ®Ã°Ã°Ã¥ÃªÃ²Ã­Ã®Ã¥ Ã§Ã­Ã Ã·Ã¥Ã­Ã¨Ã¥...\n";
     }
-
     return number;
 }
 */
@@ -153,10 +146,18 @@ Matrix<T> Matrix<T>::operator * (const Matrix<T>& rhs) {
 template <class T>
 Matrix<T> Matrix<T>::operator / (const T h) {
     Matrix<T> result(rows, columns);
-    for (int i = 0; i < rows; i++)
-        for (int j = 0; j < columns; j++)
-            result.matrix[i][j] = matrix[i][j] / h;
+    if (h == T(0))
+    {
+        std::cout << "invalid syntax, division by zero is not possible";
+    }
+    else
+    {
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < columns; j++)
+                result.matrix[i][j] = matrix[i][j] / h;
+    }
     return result;
+    
 }
 template <class T>
 void Matrix<T>::EnterMatrix() {
@@ -202,7 +203,7 @@ Matrix<T> Matrix<T>::operator * (const T h) {
 template <class T>
 Matrix<T> operator / (double h, Matrix<T> matrix) {
     Matrix<T> result(matrix.GetRows(), matrix.GetCols());
-    if (h == 0)
+    if (h == T(0))
     {
         std::cout << "invalid syntax, division by zero is not possible";
     }
@@ -219,7 +220,7 @@ bool Matrix<T>::operator == (const Matrix<T>& rhs) {
     if ((rows == rhs.rows) && (columns == rhs.columns)) {
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < columns; j++)
-                if (matrix[i][j] == rhs.matrix[i][j])
+                if (matrix[i][j] != rhs.matrix[i][j])
                     //if (abs(matrix[i][j] - rhs.matrix[i][j])>epsilon)
                 {
                     result = false;
@@ -233,34 +234,53 @@ bool Matrix<T>::operator == (const Matrix<T>& rhs) {
 
 }
 
+template <class T>
+bool Matrix<T>::operator != (const Matrix<T>& rhs) {
+    bool result = false;
+    if ((rows == rhs.rows) && (columns == rhs.columns)) {
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < columns; j++)
+                if (matrix[i][j] != rhs.matrix[i][j])
+                {
+                    result = true;
+                }
+    }
+    else
+    {
+        result = true;
+    }
+    return result;
+
+}
+
 
 template <class T>
 void Matrix<T>::CreateMatrixForCheck() {
     T* a = new T[3];
     T* b = new T[3];
     T* c = new T[3];
-    std::cout << "Enter a vector à" << endl;
+
+    std::cout << "Enter a vector a" << endl;
     for (int i = 0; i < 3; i++)
     {
         std::cout << "a(" << i << ") = ";
         cin >> a[i];
         //    a[i] = Check_Double();
     }
-    std::cout << "Enter a vector â" << endl;
+    std::cout << "Enter a vector b" << endl;
     for (int i = 0; i < 3; i++)
     {
         std::cout << "b(" << i << ") = ";
         cin >> b[i];
-        //    b[i] = Check_Double();
     }
-    std::cout << "Enter a vector ñ" << endl;
+    std::cout << "Enter a vector c" << endl;
     for (int i = 0; i < 3; i++)
     {
         std::cout << "c(" << i << ") = ";
         cin >> c[i];
-        //    c[i] = Check_Double();
     }
     Matrix newMatrix(3, 3);
+    std::cout << "Enter a vector a" << endl;
     for (int i = 0; i < 3; i++)
     {
         newMatrix.matrix[0][i] = a[i];
@@ -329,7 +349,7 @@ void Matrix<complex<float>>::Random()
     }
 }
 
-
+/*
 template <class T>
 Matrix<T>::~Matrix()
 {
@@ -342,7 +362,7 @@ Matrix<T>::~Matrix()
     if (rows > 0)
         delete[] matrix;
 }
-
+*/
 template class Matrix<int>;
 template class Matrix<float>;
 template class Matrix<double>;

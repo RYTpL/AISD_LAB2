@@ -38,6 +38,7 @@ public:
 	Matrix operator * (const T h);
 	Matrix operator / (const T h);
 	bool operator == (const Matrix& rhs);
+	bool operator!=(const Matrix<T>& rhs);
 	friend std::ostream& operator << (std::ostream& s, const Matrix& matrix)
 	{
 		for (int i = 0; i < matrix.rows; i++) {
@@ -53,5 +54,5 @@ public:
 	void CreateMatrixForCheck();
 	void CheckTheDeterminant();
 	void Random();
-	~Matrix();
+	//~Matrix();
 };
