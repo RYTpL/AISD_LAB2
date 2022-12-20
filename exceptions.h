@@ -33,9 +33,7 @@ class Divizion_By_Zero : public Exception
 public:
 	Divizion_By_Zero();
 	void print() const override;
-};
-
-class Zero_Determinant : public Exception
+};lass Zero_Determinant : public Exception
 {
 public:
 	Zero_Determinant();

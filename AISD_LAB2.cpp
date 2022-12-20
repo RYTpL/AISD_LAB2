@@ -1,419 +1,346 @@
-﻿#include <stdio.h>
-#include "matrix.h"
-#include "exceptions.h"
-#include <iostream>
+﻿#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#define _CRT_SECURE_NO_WARNINGS
+#include <string.h>
+#define _CRT_SECURE_NO_WARNINGS
+#include <time.h>
+#define _CRT_SECURE_NO_WARNINGS
+#include <locale.h>
+#define _CRT_SECURE_NO_WARNINGS
 #include <conio.h>
-#include <Windows.h>
+#define _CRT_SECURE_NO_WARNINGS
+#include <math.h>
+#define _CRT_SECURE_NO_WARNINGS
+#include <malloc.h>
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdlib.h>
+#include <iostream>
+#include "matrix.h"
 #include <complex>
 
-
-
-
-int Check_Int()
-{
-	int number = 0;
-	while (number <= 0)
-	{
-		while (!(cin >> number) || (cin.peek() != '\n'))
-		{
-			cin.clear();
-			while (cin.get() != '\n');
-			cout << "Введите корректное значение...\n";
-		}
-		if (number <= 0) cout << "Введите корректное значение...\n";
-
-	}
-
-	return number;
-}
 template<class T>
 T Check_Double()
 {
-	T number;
+    T number;
 
-	while (!(cin >> number) || (cin.peek() != '\n'))
-	{
-		cin.clear();
-		while (cin.get() != '\n');
-		cout << "Введите корректное значение...\n";
-	}
+    while (!(cin >> number) || (cin.peek() != '\n'))
+    {
+        cin.clear();
+        while (cin.get() != '\n');
+        cout << "Введите корректное значение...\n";
+    }
 
 
-	return number;
+    return number;
 }
 
-template <class T>
-void Сhange_Matrix(Matrix<T>** Many_Matrix, const int& current)
+int Check_Int()
 {
-	cout << "Введите индексы элемента, который нужно изменить:" << endl;
-	cout << "Введите номер строки: ";
-	int i = Check_Int() - 1;
-	cout << "Введите номер столбца: ";
-	int j = Check_Int() - 1;
+    int number = 0;
+    while (number <= 0)
+    {
+        while (!(cin >> number) || (cin.peek() != '\n'))
+        {
+            cin.clear();
+            while (cin.get() != '\n');
+            cout << "Введите корректное значение...\n";
+        }
+        if (number <= 0) cout << "Введите корректное значение...\n";
 
-	try
-	{
-		((*Many_Matrix)[current]).Get_Data(i, j);
-		cout << "Введите значение, на которое вы хотите поменять число:";
-		T value = Check_Double<T>();
-		((*Many_Matrix)[current])(i, j, value);
-	}
-	catch (Exception& error)
-	{
-		error.print();
+    }
 
-	}
-}
-
-template <class T>
-Matrix<T> Random_Matrix(int m, int n)
-{
-	Matrix<T> New_matrix(m, n);
-	New_matrix.Random();
-	return  New_matrix;
-}
-
-template <class T>
-void Add_Matrix(int* size, Matrix<T>** Many_Matrix, Matrix<T> New_matrix)
-{
-	*size += 1;
-	Matrix<T>* tmp = new Matrix<T>[*size];
-	if (*size - 1 != 0)
-	{
-		for (int i = 0; i < (*size) - 1; i++)
-			tmp[i] = (*Many_Matrix)[i];
-		delete[](*Many_Matrix);
-	}
-	tmp[*size - 1] = New_matrix;
-	*Many_Matrix = tmp;
-
-}
-
-template <class T>
-void Print_Matrix(Matrix<T>* Many_Matrix, int current, int size)
-{
-
-	if (Many_Matrix == NULL) cout << "Матриц нет(\n\n";
-	else cout << "Матрица №" << (current + 1) << "\n" << (Many_Matrix)[current];
+    return number;
 }
 
 int get_key()
 {
-	int key = _getch();
-	if ((key == 0) || (key == 224)) key = _getch();
-	return key;
+    int key = _getch();
+    if ((key == 0) || (key == 224))
+        key = _getch();
+    return key;
 }
+
+int menu1()
+{
+    std::cout << "\nMatrix Class.\n\n"
+        "1 - View/edit the studied matrices.\n"
+        "2 - Matrix Addition(+)\n"
+        "3 - Matrix difference(-)\n"
+        "4 - multiplication matrix(*)\n"
+        "5 - Multiplying a matrix by a scalar\n"
+        "6 - Dividing a matrix by a scalar\n"
+        "7 - Calculating the trace of the matrix\n"
+        "8 - Checking vectors for coplanarity\n"
+        "9 - Matrix Comparison\n"
+        "0 - Access to an element in matrix A by index.Var-3\n\n"
+        "Exit: Esc";
+
+
+    while (true)
+    {
+        int key = get_key();
+        if ((key == 27) || (key >= '0' && key <= '9'))
+            return key;
+    }
+}
+
+int menu2()
+{
+    std::cout << "\n\n";
+    std::cout << "Resume: Enter";
+    while (true)
+    {
+        int key = get_key();
+        if (key == 13) return key;
+    }
+}
+
+int menu3()
+{
+    std::cout << "1 - Yes\n2 - No";
+    while (true)
+    {
+        int key = get_key();
+        if (key == '1' || key == '2') return key;
+    }
+}
+
+
+
 
 template <class T>
-void menu()
+std::ostream& operator << (std::ostream& s, const Matrix<T>& matrix);
+template <class T>
+int menu()
 {
-	int key = 0;
-	bool menu1 = true;
-	Matrix<T>* Many_Matrix = NULL;
-	Matrix<T> New_matrix;
-	Matrix<T>* Vector = NULL;
-	int current = 0, size = 0;
-	T value = 0;
-	T x = 0;
-	T cheker = 0;
-	while (menu1)
-	{
+    Matrix<T> A(2, 2), B(2, 2), C(2, 2), D(2, 2);
 
-		system("cls");
-		cout << "\tМОИ МАТРИЦЫ\n" << endl;
-		Print_Matrix(Many_Matrix, current, size);
+    while (true) {
+        system("cls");
+        int m1 = menu1();
+        switch (m1) {
+        case 27: return 0;
+        case 49: {
+            system("cls");
+            std::cout << "\tInvestigated matrices:\n\n";
+            std::cout << "A:\n" << A << endl;
+            std::cout << "B:\n" << B;
 
-		cout << "1 - Задать матрицу рандомно\n2 - Сложить две матрицы \n3 - Вычесть из одной матрицы другую" << endl;
-		cout << "4 - Умножить одну матрицу на другую\n5 - Домножить на скаляр\n6 - Разделить на скаляр" << endl;
-		cout << "7 - Вычислить след матрицы\n8 - Выполнить задание" << endl;
-		cout << "9 - Изменить одно значение в текущей матрице\n0 - Завершить работу" << endl;
-		cout << "\"+\" - Задать матрицу с определенным числом" << endl;
-		cout << "-> Вправо\n-< Влево\n" << endl;
+            std::cout << "\n\nDo you want to change the matrices?" << endl;
+            int m3 = menu3();
+            switch (m3) {
+            case 49: {
+                system("cls");
+                std::cout << "\n--------Setting the matrix A--------" << endl;
+                A.EnterMatrix();
 
-		T Scalar = 0;
+                std::cout << "\n--------Setting the matrix B--------" << endl;
+                B.EnterMatrix();
 
-		key = get_key();
-		int m = 0, n = 0;
-		switch (key)
-		{
-		case(49):
+                break;
+            }
+            case 50: {
+                break;
+            }
+            }
 
-			cout << "\tВведите размерность матрицы: \n";
-			cout << "\nВведите количество столбцов: ";
-			m = Check_Int();
+            break;
+        }
+        case 50: {
+            system("cls");
+            std::cout << "\tMatrix Addition.\n\n";
+            bool check = 0;
+            try {
+                C = A + B;
+                check = 1;
+            }
+            catch (const char* message) {
+                std::cout << message;
+            }
 
-			cout << "Введите количество строк: ";
-			n = Check_Int();
-			printf("Данные считаны\n ");
-			system("pause");
+            if (check) {
+                std::cout << "A + B:\n\n" << endl;
+                std::cout << A << "\n +\n\n" << B << "\n = \n\n";
+                std::cout << A + B;
+            }
 
-			New_matrix = Random_Matrix<T>(m, n);
-			Add_Matrix<T>(&size, &Many_Matrix, New_matrix);
-			current = size - 1;
+            break;
+        }
+        case 51: {
+            system("cls");
+            std::cout << "\tMatrix difference.\n\n";
+            bool check = 0;
+            try {
+                C = A - B;
+                check = 1;
+            }
+            catch (const char* message) {
+                std::cout << message;
+            }
 
-			break;
-		case(50):
-			if ((size + 1) < 2)
-			{
-				cout << "\nУ вас должно быть хотя бы две матрицы...\n" << endl;
-				system("pause");
-				break;
-			}
-			cout << "Введите номер матрицы, которую вы хотите сложить с текущей:\n" << endl;
-			m = Check_Int();
-			while (m > size)
-			{
-				cout << "Такой матрицы нет..." << endl;
-				cout << "Попробуйте еще раз..." << endl;
-				m = Check_Int();
+            if (check) {
+                C = A - B;
+                std::cout << "A - B:\n\n" << endl;
+                std::cout << A << "\n -\n\n" << B << "\n = \n\n";
+                std::cout << C;
+            }
 
-			}
-			try
-			{
-				New_matrix = Many_Matrix[current] + Many_Matrix[m - 1];
-				Add_Matrix<T>(&size, &Many_Matrix, New_matrix);
-				current = size - 1;
-			}
-			catch (Exception& error)
-			{
-				error.print();
-				system("pause");
-			}
+            break;
+        }
+        case 52: {
+            system("cls");
+            std::cout << "\tmultiplication matrix.\n\n";
+            bool check = 0;
+            try {
+                C = A * B;
+                check = 1;
+            }
+            catch (const char* message) {
+                std::cout << message;
+            }
 
-			break;
-		case(51):
-			if ((size + 1) < 2)
-			{
-				cout << "\nУ вас должно быть хотя бы две матрицы...\n" << endl;
-				system("pause");
-				break;
-			}
-			cout << "Введите номер матрицы, которую вы хотите вычесть:\n" << endl;
-			m = Check_Int();
+            if (check) {
+                C = A * B;
+                std::cout << "A * B:\n\n" << endl;
+                std::cout << A << "\n *\n\n" << B << "\n = \n\n";
+                std::cout << C;
+            }
 
-			while (m > size)
-			{
-				cout << "Такой матрицы нет..." << endl;
-				cout << "Попробуйте еще раз..." << endl;
-				m = Check_Int();
-			}
-			try
-			{
-				New_matrix = Many_Matrix[current] - Many_Matrix[m - 1];
-				Add_Matrix<T>(&size, &Many_Matrix, New_matrix);
-				current = size - 1;
-			}
-			catch (Exception& error)
-			{
-				error.print();
-				system("pause");
-			}
+            break;
+        }
+        case 53: {
+            system("cls");
+            std::cout << "\tMultiplying a matrix by a scalar.\n\n";
+            T a;
+            std::cout << "Enter a value (scalar): ";
+            //a = double_checker();
+            a = Check_Double<T>();
+            std::cout << "A * a:\n\n" << endl;
+            std::cout << A << "\n *\n\n " << a << "\n\n = \n\n";
+            C = A * a;
+            std::cout << C;
+            std::cout << D;
+            break;
+        }
+        case 54: {
+            system("cls");
+            std::cout << "\tDividing a matrix by a scalar.\n\n";
+            T a;
+            std::cout << "Enter a value (scalar): ";
+            //a = zero_checker();
+            a = Check_Double<T>();
+            std::cout << "A \ a:\n\n" << endl;
+            std::cout << A << "\n /\n\n " << a << "\n\n = \n\n";
+            C = A / a;
+            std::cout << C;
 
-			break;
-		case(52):
-			if ((size + 1) < 2)
-			{
-				cout << "\nУ вас должно быть хотя бы две матрицы...\n" << endl;
-				system("pause");
-				break;
-			}
-			do
-			{
-				cout << "Введите номер матрицы, которую вы хотите умножить на текущую:\n" << endl;
-				m = Check_Int();
-				system("pause");
-			} while (m > size);
-			try
-			{
-				New_matrix = Many_Matrix[current] * Many_Matrix[m - 1];
-				Add_Matrix<T>(&size, &Many_Matrix, New_matrix);
-				current = size - 1;
-			}
-			catch (Exception& error)
-			{
-				error.print();
-				system("pause");
-			}
+            break;
+        }
+        case 55: {
+            system("cls");
+            std::cout << "\tCalculating the trace of the matrix.\n\n";
+            std::cout << "Tr(A) = " << A.tr();
+            break;
+        }
+               /*case 56: {
+                   system("cls");
+                   std::cout << "Checking vectors for coplanarity." << endl;
+                   Matrix<T> test;
+                   test.CreateMatrixForCheck();
+                   test.CheckTheDeterminant();
+                   break;
+               }*/
+        case 58:
+        {
+            system("cls");
+            std::cout << "Access to an element in matrix A by index." << endl;
+            std::cout << "enter the row: ";
+            int x = Check_Int();
+            std::cout << "\nenter the column: ";
+            int y = Check_Int();
+            std::cout << "\nthe value of the element: " << A(x, y);
+            std::cout << "\nDo you want to change ellement?\n";
+            int m3 = menu3();
+            switch (m3) {
+            case 49: {
+                system("cls");
+                cout << "Enter the value: ";
+                A(x, y) = Check_Double<T>();
+                break;
+            }
+            case 50: {
+                break;
+            }
+                   break;
+            }
+        }
+        case 57:
+        {
+            system("cls");
+            std::cout << "Matrix Comparison.\n Enter epsilon: " << endl;
+            std::cin >> A.epsilon;
+            if (A == B)
+            {
+                std::cout << "A == B\n";
+            }
+            else
+            {
+                std::cout << "A!=B\n";
+            }
+        }
+        }
+        while (true)
+        {
+            int m2 = menu2();
+            if (m2 == 13) break;
+        }
+    }
 
-			break;
-
-		case(53):
-			if (size == 0)
-			{
-				cout << "\nУ вас должна быть хотя бы одна матрица...\n" << endl;
-				system("pause");
-				break;
-			}
-			cout << "Введите число: ";
-			Scalar = Check_Double<T>();
-			New_matrix = Many_Matrix[current] * Scalar;
-			Add_Matrix<T>(&size, &Many_Matrix, New_matrix);
-			system("pause");
-			current = size - 1;
-			break;
-		case(54):
-			if (size == 0)
-			{
-				cout << "\nУ вас должна быть хотя бы одна матрица...\n" << endl;
-				system("pause");
-				break;
-			}
-			cout << "Введите число:" << endl;
-			Scalar = Check_Double<T>();
-			try
-			{
-				New_matrix = Many_Matrix[current] / Scalar;
-
-				Add_Matrix<T>(&size, &Many_Matrix, New_matrix);
-				current = size - 1;
-			}
-			catch (Exception& Error)
-			{
-				Error.print();
-				system("pause");
-			}
-
-
-			break;
-
-		case(55):
-			if (size == 0)
-			{
-				cout << "\nУ вас должна быть хотя бы одна матрица...\n" << endl;
-				system("pause");
-				break;
-			}
-			try
-			{
-				cout << "След матрицы = " << Many_Matrix[current].Сalculating_trace_matrix() << endl;
-				system("pause");
-			}
-			catch (Exception& Error)
-			{
-				Error.print();
-				system("pause");
-			}
-			break;
-
-		case(56):
-
-			if (size == 0)
-			{
-				cout << "\nУ вас должна быть хотя бы одна матрица...\n" << endl;
-				system("pause");
-				break;
-			}
-			if ((Many_Matrix[current].Get_m() == Many_Matrix[current].Get_n()) && (Many_Matrix[current].Get_m() != 3))
-			{
-				cout << "\nВыберите матрицу с размером три на три..." << endl;
-				system("pause");
-				break;
-			}
-			x = Many_Matrix[current].NDeterminant();
-			cout << "Определитель матрицы = " << x << endl;
-			if (x == cheker)
-			{
-				cout << "Векторы, составляющие матрицу 3 на 3 комплонарны" << endl;
-			}
-			if (x != cheker)
-			{
-				cout << "Векторы, составляющие матрицу 3 на 3 не комплонарны" << endl;
-			}
-			system("pause");
-
-			break;
-		case(57):
-			if (size == 0)
-			{
-				cout << "\nУ вас должна быть хотя бы одна матрица...\n" << endl;
-				system("pause");
-				break;
-			}
-
-			Сhange_Matrix(&Many_Matrix, current);
-			system("pause");
-
-			break;
-		case(61):
-		{
-			cout << "\tВведите размерность матрицы: \n";
-			cout << "\nВведите количество столбцов: ";
-			m = Check_Int();
-
-			cout << "Введите количество строк: ";
-			n = Check_Int();
-
-			cout << "Введите число, которым будет заполнена вся матрица:";
-			value = Check_Double<T>();
-			New_matrix = Matrix<T>(m, n, value);
-			Add_Matrix<T>(&size, &Many_Matrix, New_matrix);
-			current = size - 1;
-			cout << "Данные считаны\n ";
-			system("pause");
-		}
-		break;
-		case(48):
-			system("cls");
-
-
-			menu1 = false;
-			break;
-		case 75:
-			if (current > 0) current--;
-			break;
-		case 77:
-			if (current < size - 1) current++;
-			break;
-		default:
-			break;
-		}
-	}
 }
 
-int main()
+int main(int argc, char* argv[])
 {
-	setlocale(LC_ALL, "RUS");
-	SetConsoleCP(1251);
-	SetConsoleOutputCP(1251);
-	bool exit = true;
-	while (exit) {
-		cout << "Здравствуйте! Вас приветствует программа \"МНОГО МАТРИЦ\"\n" << endl;
-		cout << "Нажмите:" << endl;
-		cout << "1 - чтобы работать с типом int" << endl;
-		cout << "2 - чтобы работать с типом double" << endl;
-		cout << "3 - чтобы работать с типом float" << endl;
-		cout << "4 - чтобы работать с типом complex-double" << endl;
-		cout << "5 - чтобы работать с типом complex-float" << endl;
-		cout << "0 - чтобы завершить работу" << endl;
+    setlocale(LC_ALL, "");
+    system("cls");
+    bool exit = true;
+    while (exit) {
+        system("cls");
+        cout << "Здравствуйте! Вас приветствует программа \"МНОГО МАТРИЦ\"\n" << endl;
+        cout << "Нажмите:" << endl;
+        cout << "1 - чтобы работать с типом int" << endl;
+        cout << "2 - чтобы работать с типом double" << endl;
+        cout << "3 - чтобы работать с типом float" << endl;
+        cout << "4 - чтобы работать с типом complex-double" << endl;
+        cout << "5 - чтобы работать с типом complex-float" << endl;
+        cout << "0 - чтобы завершить работу" << endl;
 
-		int key = get_key();
+        int key = get_key();
 
-		switch (key)
-		{
-		case 49:
-			menu<int>();
-			break;
-		case 50:
-			menu<double>();
-			break;
-		case 51:
-			menu<float>();
-			break;
-		case 52:
-			menu<complex<double>>();
-			break;
-		case 53:
-			menu<complex<float>>();
-			break;
-		case 48:
-			exit = false;
-			break;
-		default:
-			break;
-		}
+        switch (key)
+        {
+        case 49:
+            menu<int>();
+            break;
+        case 50:
+            menu<double>();
+            break;
+        case 51:
+            menu<float>();
+            break;
+        case 52:
+            menu<complex<double>>();
+            break;
+        case 53:
+            menu<complex<float>>();
+            break;
+        case 48:
+            exit = false;
+            break;
+        default:
+            break;
+        }
 
-	}
+    }
 
-	return 0;
+    return 0;
 }

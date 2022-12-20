@@ -1,56 +1,57 @@
-#include <iostream>
+#pragma once
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#define _CRT_SECURE_NO_WARNINGS
+#include <string.h>
+#define _CRT_SECURE_NO_WARNINGS
+#include <time.h>
+#define _CRT_SECURE_NO_WARNINGS
+#include <locale.h>
+#define _CRT_SECURE_NO_WARNINGS
+#include <conio.h>
+#define _CRT_SECURE_NO_WARNINGS
 #include <math.h>
-#include <complex>
-#include <iomanip>
+#define _CRT_SECURE_NO_WARNINGS
+#include <malloc.h>
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdlib.h>
+#include <iostream>
 using namespace std;
 
 template <class T>
 class Matrix
 {
 private:
-	T** data;
-	int m, n;
+	int rows, columns;
+	T** matrix;
 
 public:
+	T epsilon;
 	Matrix();
-	Matrix(int m, int n);
-	Matrix(int m, int n, const T& value);
-	Matrix(const Matrix& Matrix);
-	void Set_m(int m = 1);
-	void Set_n(int n = 1);
-	int Get_m();
-	int Get_n();
-	void Set_Data(const T& value);
-	T Get_Data(int i, int j) const;
-	void Print(const int& Number_Matrix);
-	Matrix& operator = (const Matrix& M);
-	~Matrix();
-	T& operator () (int m, int n) const;
-	Matrix& operator () (int m, int n, const T& value);
-	Matrix operator + (const Matrix& New_Matrix);
-	Matrix operator - (const Matrix& New_Matrix);
-	Matrix operator * (const Matrix& New_Matrix);
-	Matrix operator * (const T& scalar);
+	Matrix(int rows, int columns);
+	void EnterMatrix();
+	T& operator () (int i, int j);
 
-	friend Matrix operator * (const T& scalar, Matrix& Matrix)
+	Matrix operator + (const Matrix& rhs);
+	Matrix operator - (const Matrix& rhs);
+	Matrix operator * (const Matrix& rhs);
+	Matrix operator * (const T h);
+	Matrix operator / (const T h);
+	bool operator == (const Matrix& rhs);
+	friend std::ostream& operator << (std::ostream& s, const Matrix& matrix)
 	{
-		return Matrix * scalar;
-	}
-
-	Matrix operator / (const T& scalar);
-	T Ñalculating_trace_matrix();
-	void Random();
-	T NDeterminant();
-	friend ostream& operator << (ostream& os, const Matrix& New_Matrix)
-	{
-		for (int i = 0; i < New_Matrix.m; i++) {
-			for (int j = 0; j < New_Matrix.n; j++) {
-				os << setw(10) << New_Matrix.Get_Data(i, j);
-			}
-			cout << endl;
+		for (int i = 0; i < matrix.rows; i++) {
+			for (int j = 0; j < matrix.columns; j++)
+				s << matrix.matrix[i][j] << " ";
+			s << "\n";
 		}
-		return os;
+		return s;
 	}
-
+	int GetRows() const;
+	int GetCols() const;
+	T tr();
+	void CreateMatrixForCheck();
+	void CheckTheDeterminant();
+	void Random();
+	~Matrix();
 };
-
