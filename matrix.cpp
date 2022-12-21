@@ -18,36 +18,7 @@
 #include <random>
 #include "matrix.h"
 #include <complex>
-/*
-template<class T>
-T Check_Double()
-{
-    T number;
-    while (!(cin >> number) || (cin.peek() != '\n'))
-    {
-        cin.clear();
-        while (cin.get() != '\n');
-        cout << "Ââåäèòå êîððåêòíîå çíà÷åíèå...\n";
-    }
-    return number;
-}
-//int
-int Check_Int()
-{
-    int number = 0;
-    while (number <= 0)
-    {
-        while (!(cin >> number) || (cin.peek() != '\n'))
-        {
-            cin.clear();
-            while (cin.get() != '\n');
-            cout << "Ââåäèòå êîððåêòíîå çíà÷åíèå...\n";
-        }
-        if (number <= 0) cout << "Ââåäèòå êîððåêòíîå çíà÷åíèå...\n";
-    }
-    return number;
-}
-*/
+
 template <class T>
 Matrix<T>::Matrix() {
     epsilon = 0.0;
@@ -319,6 +290,15 @@ void Matrix<T>::CheckTheDeterminant() {
     }
 }
 
+template <class T>
+void Matrix<T>::Random()
+{
+    srand(time(0));
+    for (int i = 0; i < rows; ++i)
+        for (int j = 0; j < columns; ++j)
+            matrix[i][j] = T((1 + rand() % 100) / 10.0);
+}
+
 template <>
 void Matrix<complex<double>>::Random()
 {
@@ -332,7 +312,6 @@ void Matrix<complex<double>>::Random()
         }
     }
 }
-
 
 template <>
 void Matrix<complex<float>>::Random()
@@ -349,20 +328,6 @@ void Matrix<complex<float>>::Random()
     }
 }
 
-/*
-template <class T>
-Matrix<T>::~Matrix()
-{
-    if (rows > 0)
-    {
-        for (int i = 0; i < columns; i++)
-            delete[] matrix[i];
-    }
-
-    if (rows > 0)
-        delete[] matrix;
-}
-*/
 template class Matrix<int>;
 template class Matrix<float>;
 template class Matrix<double>;

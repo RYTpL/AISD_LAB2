@@ -114,7 +114,8 @@ template <class T>
 int menu()
 {
     Matrix<T> A(2, 2), B(2, 2), C(2, 2), D(2, 2);
-
+    A.Random();
+    B.Random();
     while (true) {
         system("cls");
         int m1 = menu1();
@@ -213,13 +214,13 @@ int menu()
             std::cout << "\tMultiplying a matrix by a scalar.\n\n";
             T a;
             std::cout << "Enter a value (scalar): ";
-            //a = double_checker();
+
             a = Check_Double<T>();
             std::cout << "A * a:\n\n" << endl;
             std::cout << A << "\n *\n\n " << a << "\n\n = \n\n";
             C = A * a;
             std::cout << C;
-            //std::cout << D;
+  
             break;
         }
         case 54: {
@@ -227,7 +228,6 @@ int menu()
             std::cout << "\tDividing a matrix by a scalar.\n\n";
             T a;
             std::cout << "Enter a value (scalar): ";
-            //a = zero_checker();
             a = Check_Double<T>();
             std::cout << "A / a:\n\n" << endl;
             std::cout << A << "\n /\n\n " << a << "\n\n = \n\n";

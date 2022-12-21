@@ -54,5 +54,4 @@ public:
 	void CreateMatrixForCheck();
 	void CheckTheDeterminant();
 	void Random();
-	//~Matrix();
 };
