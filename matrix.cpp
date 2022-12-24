@@ -251,14 +251,13 @@ void Matrix<T>::CreateMatrixForCheck() {
         cin >> c[i];
     }
     Matrix newMatrix(3, 3);
-    std::cout << "Enter a vector a" << endl;
     for (int i = 0; i < 3; i++)
     {
         newMatrix.matrix[0][i] = a[i];
     }
     for (int i = 0; i < 3; i++)
     {
-        newMatrix.matrix[2][i] = b[i];
+        newMatrix.matrix[1][i] = b[i];
     }
     for (int i = 0; i < 3; i++)
     {
@@ -276,9 +275,14 @@ void Matrix<T>::CreateMatrixForCheck() {
 }
 template <class T>
 void Matrix<T>::CheckTheDeterminant() {
-    T d = matrix[0][0] * matrix[1][1] * matrix[2][2] + matrix[0][1] * matrix[1][2] * matrix[2][0]
-        + matrix[1][0] * matrix[2][1] * matrix[0][2] - matrix[2][0] * matrix[1][1] * matrix[0][2] -
-        matrix[2][1] * matrix[1][2] * matrix[0][0] - matrix[1][0] * matrix[0][1] * matrix[2][2];
+    T d = 0;
+    d += matrix[0][0] * matrix[1][1] * matrix[2][2];
+    d += matrix[0][1] * matrix[1][2] * matrix[2][0];
+    d += matrix[1][0] * matrix[2][1] * matrix[0][2];
+    d -= matrix[2][0] * matrix[1][1] * matrix[0][2];
+    d -= matrix[2][1] * matrix[1][2] * matrix[0][0];
+    d -= matrix[1][0] * matrix[0][1] * matrix[2][2];
+
     T a = 0;
     if (d == a)
     {
@@ -286,7 +290,7 @@ void Matrix<T>::CheckTheDeterminant() {
     }
     else
     {
-        std::cout << "the vectors are non-planar, since the determinant of the matrix is" << d << endl;
+        std::cout << "the vectors are non-planar, since the determinant of the matrix is " << d << endl;
     }
 }
 
